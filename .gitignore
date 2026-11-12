@@ -1,0 +1,15 @@
+
+# Generated at build time
+# IDE / editor
+# OS
+# PlatformIO
+*.code-workspace
+.DS_Store
+.idea/
+.pio/
+.pioenvs/
+.piolibdeps/
+.vscode/
+Thumbs.db
+src/build_version.h
+tools/sim/out/

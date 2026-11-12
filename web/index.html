@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CYD Fire Eye – Web installer</title>
+  <style>
+    :root {
+      --bg: #0b0806;
+      --card: #1a1210;
+      --fg: #e9ecf2;
+      --muted: #9aa3b2;
+      --accent: #ff7a1a;
+      --line: #3a2418;
+      --warn: #e7a33e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.55;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+    main { width: 100%; max-width: 640px; }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #1a1500;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    h1 { font-size: 1.7rem; margin: 14px 0 4px; }
+    p.lead { color: var(--muted); margin-top: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .shots img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+    .shots figure { margin: 0; }
+    .shots figcaption { color: var(--muted); font-size: .85rem; margin-top: 4px; text-align: center; }
+    .flash-row { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+    esp-web-install-button[install-unsupported] { display: none; }
+    .unsupported {
+      display: none;
+      background: rgba(231,163,62,.12);
+      border: 1px solid var(--warn);
+      color: #f2c98a;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: .95rem;
+    }
+    esp-web-install-button[install-unsupported] ~ .unsupported { display: block; }
+    ol { padding-left: 20px; }
+    ol li { margin: 6px 0; }
+    .note {
+      font-size: .9rem;
+      color: var(--muted);
+      border-left: 3px solid var(--warn);
+      padding: 4px 0 4px 14px;
+      margin: 16px 0 0;
+    }
+    footer { color: var(--muted); font-size: .85rem; text-align: center; margin-top: 24px; }
+    footer a { color: var(--accent); }
+    .ver { font-variant-numeric: tabular-nums; }
+    @media (max-width: 520px) { .shots { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="badge">ESP32-2432S028R</span>
+    <h1>CYD Fire Eye — Web installer</h1>
+    <p class="lead">A slowly pulsing eye of fire with a devilish pupil that follows your finger, for the Cheap Yellow Display. Install it straight from the browser — no Arduino IDE or PlatformIO needed.</p>
+
+    <div class="card">
+      <div class="flash-row">
+        <esp-web-install-button manifest="manifest.json">
+          <button slot="activate" style="
+            background: var(--accent); color:#1a0800; border:0;
+            font-weight:700; font-size:1rem; padding:12px 22px;
+            border-radius:10px; cursor:pointer;">
+            🔥 Install CYD Fire Eye
+          </button>
+        </esp-web-install-button>
+        <div class="unsupported">
+          Your browser does not support Web Serial. Use <strong>Chrome</strong> or <strong>Edge</strong> on a computer (not mobile).
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="docs/preview.gif" alt="Fire Eye animation" style="width:100%;border-radius:10px;border:1px solid var(--line);display:block">
+    </div>
+
+    <div class="card">
+      <strong>How to</strong>
+      <ol>
+        <li>Open this page in <strong>Chrome</strong> or <strong>Edge</strong> on a computer.</li>
+        <li>Plug the CYD into USB.</li>
+        <li>Click <em>Install CYD Fire Eye</em> and pick the serial port (CH340/CP2102).</li>
+        <li>Done — no Wi-Fi needed. Skip the Wi-Fi step if the installer offers it.</li>
+      </ol>
+      <p class="note">
+        On the device: <strong>tap</strong> to make the eye look at you and flare up,
+        <strong>hold</strong> to make the pupil grow and the fire roar.
+      </p>
+    </div>
+
+    <footer>
+      Build <span class="ver" id="ver">…</span> ·
+      <a href="https://github.com/martindamp/CYD-hal9000" target="_blank" rel="noopener">source on GitHub</a>
+    </footer>
+  </main>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10.4.0/dist/web/install-button.js"></script>
+  <script>
+    fetch("manifest.json")
+      .then(r => r.json())
+      .then(m => { document.getElementById("ver").textContent = m.version || "unknown"; })
+      .catch(() => { document.getElementById("ver").textContent = "unknown"; });
+  </script>
+</body>
+</html>
